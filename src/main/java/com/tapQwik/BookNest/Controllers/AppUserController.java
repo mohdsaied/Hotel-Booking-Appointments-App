@@ -1,17 +1,29 @@
 package com.tapQwik.BookNest.Controllers;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.tapQwik.BookNest.DTOs.UserRegistrationDTO;
+import com.tapQwik.BookNest.EntityClasses.UserRegistration;
+import com.tapQwik.BookNest.ServiceImpl.UserRegistrationImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/AppUser")
 public class AppUserController {
 
 
-    @RequestMapping("/getControl")
-    public String HelloController(){
-        return "Hello Saied This Code is Proper Working......";
+    private UserRegistrationImpl userRegistrationImpl;
+
+    public AppUserController(UserRegistrationImpl userRegistrationImpl) {
+        this.userRegistrationImpl = userRegistrationImpl;
+    }
+
+
+    @PostMapping("/UserRegistration")
+    public ResponseEntity<?> LoginAsUser(@RequestBody UserRegistrationDTO dto){
+        UserRegistration userRegistration = userRegistrationImpl.registrationUser(dto);
+        return new ResponseEntity<>(userRegistration, HttpStatus.OK);
     }
 }
